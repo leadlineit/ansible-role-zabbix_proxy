@@ -1,0 +1,31 @@
+---
+- name: Update repo cache and install a few prerequisite packages
+  apt:
+    pkg:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - gnupg2
+    update_cache: true
+
+- name: Add the key for the official Zabbix repository to your system
+  apt_key:
+    url: https://repo.zabbix.com/zabbix-official-repo.key
+    state: present
+
+- name: Add the Zabbix repository to APT sources
+  template:
+    src: zabbix.list.j2
+    dest: /etc/apt/sources.list.d/zabbix.list
+    mode: '0644'
+
+- name: Install Zabbix Proxy for MySQL
+  apt:
+    name: zabbix-proxy-mysql
+    state: present
+    update_cache: true
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+  notify:
+    - enable zabbix-proxy service
+    - restart zabbix-proxy service

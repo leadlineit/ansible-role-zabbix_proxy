@@ -1,0 +1,15 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: Install requirements
+      apt:
+        name: gnupg
+        state: present
+        update_cache: true
+    - name: "Dependency role for MySQL Server"
+      include_role:
+        name: "leadlineit.mysql_server"
+    - name: "Include leadlineit.zabbix_proxy"
+      include_role:
+        name: "leadlineit.zabbix_proxy"
