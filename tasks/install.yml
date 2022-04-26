@@ -1,29 +1,37 @@
 ---
 - name: Update repo cache and install a few prerequisite packages
   apt:
-    pkg:
-      - apt-transport-https
-      - ca-certificates
-      - curl
-      - gnupg2
+    name: "{{ item }}"
+    state: present
     update_cache: true
+  with_items:
+    - apt-transport-https
+    - gnupg2
 
 - name: Add the key for the official Zabbix repository to your system
   apt_key:
-    url: https://repo.zabbix.com/zabbix-official-repo.key
+    url: "{{ item }}"
     state: present
+  with_items:
+    - "https://repo.zabbix.com/zabbix-official-repo.key"
 
 - name: Add the Zabbix repository to APT sources
-  template:
-    src: zabbix.list.j2
-    dest: /etc/apt/sources.list.d/zabbix.list
+  apt_repository:
+    repo: "{{ item }}"
+    state: present
+    filename: zabbix
     mode: '0644'
+  with_items:
+    - "deb https://repo.zabbix.com/zabbix/5.4/debian {{ ansible_distribution_release }} main"
+    - "deb-src https://repo.zabbix.com/zabbix/5.4/debian {{ ansible_distribution_release }} main"
 
 - name: Install Zabbix Proxy for MySQL
   apt:
-    name: zabbix-proxy-mysql
+    name: "{{ item }}"
     state: present
     update_cache: true
+  with_items:
+    - zabbix-proxy-mysql
   environment:
     DEBIAN_FRONTEND: noninteractive
   notify:

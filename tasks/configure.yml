@@ -2,7 +2,7 @@
 - name: Check if zabbix_proxy.conf.bkp file exists
   stat:
     path: /etc/zabbix/zabbix_proxy.conf.orig
-  register: conf_orig_rules
+  register: conf_orig
 
 - name: Backup(copy) official zabbix_proxy.conf
   copy:
@@ -10,7 +10,7 @@
     src: /etc/zabbix/zabbix_proxy.conf
     dest: /etc/zabbix/zabbix_proxy.conf.orig
     mode: '0640'
-  when: not conf_orig_rules.stat.exists
+  when: not conf_orig.stat.exists
 
 - name: Copy a new zabbix_proxy.conf with our variables
   template:
@@ -42,9 +42,11 @@
 
 - name: Install Zabbix MySQL scripts
   apt:
-    name: zabbix-sql-scripts
+    name: "{{ item }}"
     state: present
     update_cache: true
+  with_items:
+    - zabbix-sql-scripts
   environment:
     DEBIAN_FRONTEND: noninteractive
   notify:
@@ -73,5 +75,6 @@
     owner: "root"
     group: "root"
     mode: '0644'
+  when: zabbix_proxy_psk is defined
   notify:
     - restart zabbix-proxy service
