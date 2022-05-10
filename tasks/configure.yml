@@ -1,11 +1,11 @@
 ---
 - name: Check if zabbix_proxy.conf.bkp file exists
-  stat:
+  ansible.builtin.stat:
     path: /etc/zabbix/zabbix_proxy.conf.orig
   register: conf_orig
 
 - name: Backup(copy) official zabbix_proxy.conf
-  copy:
+  ansible.builtin.copy:
     remote_src: true
     src: /etc/zabbix/zabbix_proxy.conf
     dest: /etc/zabbix/zabbix_proxy.conf.orig
@@ -13,7 +13,7 @@
   when: not conf_orig.stat.exists
 
 - name: Copy a new zabbix_proxy.conf with our variables
-  template:
+  ansible.builtin.template:
     src: zabbix_proxy.conf.j2
     dest: /etc/zabbix/zabbix_proxy.conf
     owner: root
@@ -23,25 +23,25 @@
     - restart zabbix-proxy service
 
 - name: Create directory for scripts
-  file:
+  ansible.builtin.file:
     path: /usr/lib/zabbix/externalscripts
     state: directory
     mode: '0755'
 
 - name: Copy external scripts
-  copy:
+  ansible.builtin.copy:
     src: "{{ item.src }}"
     dest: /usr/lib/zabbix/externalscripts/{{ item.dest }}
     owner: zabbix
     group: zabbix
     mode: '0755'
   with_items:
-    - {src: nginx-stats.sh, dest: nginx-stats.sh}
+    - { src: nginx-stats.sh, dest: nginx-stats.sh }
   notify:
     - restart zabbix-proxy service
 
 - name: Install Zabbix MySQL scripts
-  apt:
+  ansible.builtin.apt:
     name: "{{ item }}"
     state: present
     update_cache: true
@@ -53,7 +53,7 @@
     - restart zabbix-proxy service
 
 - name: Create MySQL database for Zabbix Proxy
-  mysql_db:
+  community.mysql.mysql_db:
     name: "{{ zabbix_proxy_dbname }}"
     state: present
   notify:
@@ -61,7 +61,7 @@
 
 - name: Create the database user
   no_log: true
-  mysql_user:
+  community.mysql.mysql_user:
     name: "{{ zabbix_proxy_dbuser }}"
     password: "{{ zabbix_proxy_dbpass }}"
     priv: "{{ zabbix_proxy_dbname }}.*:ALL"
@@ -69,7 +69,7 @@
     state: present
 
 - name: Add psk key for Zabbix Proxy
-  template:
+  ansible.builtin.template:
     src: proxy.psk.j2
     dest: /etc/zabbix/proxy.psk
     owner: "root"

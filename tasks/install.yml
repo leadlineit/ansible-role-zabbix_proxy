@@ -1,6 +1,6 @@
 ---
 - name: Update repo cache and install a few prerequisite packages
-  apt:
+  ansible.builtin.apt:
     name: "{{ item }}"
     state: present
     update_cache: true
@@ -9,14 +9,14 @@
     - gnupg2
 
 - name: Add the key for the official Zabbix repository to your system
-  apt_key:
+  ansible.builtin.apt_key:
     url: "{{ item }}"
     state: present
   with_items:
     - "https://repo.zabbix.com/zabbix-official-repo.key"
 
 - name: Add the Zabbix repository to APT sources
-  apt_repository:
+  ansible.builtin.apt_repository:
     repo: "{{ item }}"
     state: present
     filename: zabbix
@@ -26,7 +26,7 @@
     - "deb-src https://repo.zabbix.com/zabbix/5.4/debian {{ ansible_distribution_release }} main"
 
 - name: Install Zabbix Proxy for MySQL
-  apt:
+  ansible.builtin.apt:
     name: "{{ item }}"
     state: present
     update_cache: true

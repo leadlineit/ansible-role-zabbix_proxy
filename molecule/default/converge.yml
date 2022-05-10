@@ -3,13 +3,13 @@
   hosts: all
   tasks:
     - name: Install requirements
-      apt:
+      ansible.builtin.apt:
         name: gnupg
         state: present
         update_cache: true
     - name: "Dependency role for MySQL Server"
-      include_role:
+      ansible.builtin.include_role:
         name: "leadlineit.mysql_server"
     - name: "Include leadlineit.zabbix_proxy"
-      include_role:
+      ansible.builtin.include_role:
         name: "leadlineit.zabbix_proxy"
