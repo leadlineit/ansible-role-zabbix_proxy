@@ -1,17 +1,17 @@
 ---
-- name: import schema to zabbix-proxy database
+- name: Import schema to zabbix-proxy database
   community.mysql.mysql_db:
     name: "{{ zabbix_proxy_dbname }}"
     state: import
     target: /usr/share/doc/zabbix-sql-scripts/mysql/schema.sql.gz
     force: true
 
-- name: enable zabbix-proxy service
+- name: Enable zabbix-proxy service
   ansible.builtin.service:
     name: zabbix-proxy
     enabled: true
 
-- name: restart zabbix-proxy service
+- name: Restart zabbix-proxy service
   ansible.builtin.service:
     name: zabbix-proxy
     state: restarted

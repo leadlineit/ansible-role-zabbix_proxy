@@ -6,21 +6,11 @@ PidFile=/var/run/zabbix/zabbix_proxy.pid
 LogFile=/var/log/zabbix/zabbix_proxy.log
 LogFileSize=0
 
-{% if zabbix_proxy_mode is defined %}
-ProxyMode={{ zabbix_proxy_mode }}
-{% endif %}
+ProxyMode={{ zabbix_proxy_mode | default(0) }}
 
-Server={{ zabbix_proxy_server }}
-
-{% if zabbix_proxy_server__port is defined %}
-ServerPort={{ zabbix_proxy_server_port }}
-{% endif %}
-
-Hostname={{ zabbix_proxy_hostname }}
-
-{% if zabbix_proxy_listen_port is defined %}
-ListenPort={{ zabbix_proxy_listen_port }}
-{% endif %}
+Server={{ zabbix_proxy_server | default(127.0.0.1) }}
+Hostname={{ inventory_hostname }}
+ListenPort={{ zabbix_proxy_listen_port | default(10051) }}
 
 SocketDir=/var/run/zabbix
 
@@ -29,9 +19,6 @@ DBName={{ zabbix_proxy_dbname }}
 DBUser={{ zabbix_proxy_dbuser }}
 DBPassword={{ zabbix_proxy_dbpass }}
 DBSocket=/var/run/mysqld/mysqld.sock
-{% if zabbix_proxy_db_port is defined %}
-DBPort={{ zabbix_proxy_db_port }}
-{% endif %}
 
 ConfigFrequency=100
 
@@ -57,5 +44,5 @@ StatsAllowedIP=127.0.0.1
 TLSConnect=psk
 TLSAccept=psk
 TLSPSKFile=/etc/zabbix/proxy.psk
-TLSPSKIdentity={{ zabbix_proxy_hostname }}
+TLSPSKIdentity={{ zabbix_proxy_psk_identity | default(inventory_hostname) }}
 {% endif %}

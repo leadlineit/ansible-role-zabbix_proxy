@@ -4,9 +4,11 @@
   tasks:
     - name: Install requirements
       ansible.builtin.apt:
-        name: gnupg
+        name: "{{ item }}"
         state: present
         update_cache: true
+      with_items:
+        - gnupg
     - name: "Dependency role for MySQL Server"
       ansible.builtin.include_role:
         name: "leadlineit.mysql_server"

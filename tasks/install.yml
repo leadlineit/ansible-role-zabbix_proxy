@@ -25,7 +25,7 @@
     - "deb https://repo.zabbix.com/zabbix/5.4/debian {{ ansible_distribution_release }} main"
     - "deb-src https://repo.zabbix.com/zabbix/5.4/debian {{ ansible_distribution_release }} main"
 
-- name: Install Zabbix Proxy for MySQL
+- name: Install Zabbix Proxy with MySQL dependency
   ansible.builtin.apt:
     name: "{{ item }}"
     state: present
@@ -35,5 +35,5 @@
   environment:
     DEBIAN_FRONTEND: noninteractive
   notify:
-    - enable zabbix-proxy service
-    - restart zabbix-proxy service
+    - Enable zabbix-proxy service
+    - Restart zabbix-proxy service

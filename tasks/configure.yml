@@ -1,42 +1,29 @@
 ---
-- name: Check if zabbix_proxy.conf.bkp file exists
-  ansible.builtin.stat:
-    path: /etc/zabbix/zabbix_proxy.conf.orig
-  register: conf_orig
-
-- name: Backup(copy) official zabbix_proxy.conf
-  ansible.builtin.copy:
-    remote_src: true
-    src: /etc/zabbix/zabbix_proxy.conf
-    dest: /etc/zabbix/zabbix_proxy.conf.orig
-    mode: '0640'
-  when: not conf_orig.stat.exists
-
-- name: Copy a new zabbix_proxy.conf with our variables
+- name: Copy a new Zabbix Proxy config with our variables
   ansible.builtin.template:
     src: zabbix_proxy.conf.j2
     dest: /etc/zabbix/zabbix_proxy.conf
+    mode: '0640'
     owner: root
     group: root
-    mode: '0640'
   notify:
-    - restart zabbix-proxy service
+    - Restart zabbix-proxy service
 
-- name: Create directory for scripts
+- name: Create directory for Zabbix external scripts
   ansible.builtin.file:
     path: /usr/lib/zabbix/externalscripts
     state: directory
     mode: '0755'
-
-- name: Copy external scripts
-  ansible.builtin.copy:
-    src: "{{ item.src }}"
-    dest: /usr/lib/zabbix/externalscripts/{{ item.dest }}
     owner: zabbix
     group: zabbix
+
+- name: Copy Zabbix external script for Nginx stats
+  ansible.builtin.copy:
+    src: nginx-stats.sh
+    dest: /usr/lib/zabbix/externalscripts/nginx-stats.sh
     mode: '0755'
-  with_items:
-    - { src: nginx-stats.sh, dest: nginx-stats.sh }
+    owner: zabbix
+    group: zabbix
   notify:
     - restart zabbix-proxy service
 
@@ -50,16 +37,16 @@
   environment:
     DEBIAN_FRONTEND: noninteractive
   notify:
-    - restart zabbix-proxy service
+    - Restart zabbix-proxy service
 
 - name: Create MySQL database for Zabbix Proxy
   community.mysql.mysql_db:
     name: "{{ zabbix_proxy_dbname }}"
     state: present
   notify:
-    - import schema to zabbix-proxy database
+    - Import schema to zabbix-proxy database
 
-- name: Create the database user
+- name: Create the database user for Zabbix Proxy DB
   no_log: true
   community.mysql.mysql_user:
     name: "{{ zabbix_proxy_dbuser }}"
@@ -69,12 +56,12 @@
     state: present
 
 - name: Add psk key for Zabbix Proxy
+  when: zabbix_proxy_psk is defined
   ansible.builtin.template:
     src: proxy.psk.j2
     dest: /etc/zabbix/proxy.psk
-    owner: "root"
-    group: "root"
-    mode: '0644'
-  when: zabbix_proxy_psk is defined
+    mode: '0640'
+    owner: root
+    group: root
   notify:
-    - restart zabbix-proxy service
+    - Restart zabbix-proxy service
