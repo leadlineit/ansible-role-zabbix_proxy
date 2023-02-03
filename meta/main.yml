@@ -22,5 +22,5 @@ galaxy_info:
 dependencies:
   - role: leadlineit.mysql_server
     tags: mysql_server
-    vars:
-      mysql_root_password: "{{ mysql_root_password | mandatory }}"
+#     vars:
+#       mysql_root_password: "{{ mysql_root_password | mandatory }}"

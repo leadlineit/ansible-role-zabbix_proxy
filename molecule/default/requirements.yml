@@ -1,2 +1,4 @@
 ---
-- role: leadlineit.mysql_server
+roles:
+  - name: leadlineit.mysql_server
+    version: master

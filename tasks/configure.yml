@@ -25,7 +25,7 @@
     owner: zabbix
     group: zabbix
   notify:
-    - restart zabbix-proxy service
+    - Restart zabbix-proxy service
 
 - name: Install Zabbix MySQL scripts
   ansible.builtin.apt:
