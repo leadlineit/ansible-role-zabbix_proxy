@@ -18,9 +18,3 @@ galaxy_info:
     - monitoring
     - zabbix
     - proxy
-
-dependencies:
-  - role: leadlineit.mysql_server
-    tags: mysql_server
-#     vars:
-#       mysql_root_password: "{{ mysql_root_password | mandatory }}"
