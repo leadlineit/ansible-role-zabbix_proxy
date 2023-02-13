@@ -44,7 +44,6 @@ jobs:
         distro:
           - bullseye
           - buster
-          - stretch
     steps:
       - name: checkout
         uses: actions/checkout@v3
