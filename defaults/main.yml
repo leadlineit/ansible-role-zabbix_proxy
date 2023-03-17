@@ -1,9 +1,4 @@
 ---
-zabbix_proxy_mode: 0
-zabbix_proxy_server: 127.0.0.1
-zabbix_proxy_listen_port: 10051
 zabbix_proxy_dbname: zbx_proxy
 zabbix_proxy_dbuser: zabbix
 zabbix_proxy_dbpass: Aver@gEStr0ngPaSSw0rd
-zabbix_proxy_psk: 6c4ccf50bacdb3486f141ba1112e4a46  # openssl rand -hex 16/(32)
-zabbix_proxy_psk_identity: localhost

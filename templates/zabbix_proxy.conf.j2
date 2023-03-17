@@ -8,9 +8,9 @@ LogFileSize=0
 
 ProxyMode={{ zabbix_proxy_mode | default(0) }}
 
-Server={{ zabbix_proxy_server | default(127.0.0.1) }}
+Server={{ zabbix_proxy_server | default('127.0.0.1') }}
 Hostname={{ inventory_hostname }}
-ListenPort={{ zabbix_proxy_listen_port | default(10051) }}
+ListenPort={{ zabbix_proxy_listen_port | default('10051') }}
 
 SocketDir=/var/run/zabbix
 
