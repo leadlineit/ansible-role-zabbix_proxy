@@ -1,9 +1,9 @@
-# Ansible Role for Zabbix Proxy 5.4
+# Ansible Role for Zabbix Proxy 6.0
 
 ![Build Status](https://github.com/leadlineit/ansible-role-zabbix_proxy/actions/workflows/ansible-galaxy-ci.yml/badge.svg)
 [![Galaxy Role](https://img.shields.io/badge/Ansible--Galaxy-leadlineit.zabbix_proxy-blue.svg?logo=ansible&logoColor=white)](https://galaxy.ansible.com/leadlineit/zabbix_proxy/)
 
-This role helps to install and configure Zabbix Proxy 5.4 to Debian (bullseye/buster).
+This role helps to install and configure Zabbix Proxy 6.0 to Debian (bullseye/buster).
 
 Requirements
 ------------
