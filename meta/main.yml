@@ -3,9 +3,9 @@ galaxy_info:
   role_name: zabbix_proxy
   namespace: leadlineit
   author: Artem Kasianchuk
-  description: Install and configure Zabbix Proxy 5.4 version
+  description: Install and configure Zabbix Proxy 6.0 version
   license: MIT
-  min_ansible_version: '2.9'
+  min_ansible_version: '2.15'
   platforms:
     - name: Debian
       versions:
