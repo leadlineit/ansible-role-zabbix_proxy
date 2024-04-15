@@ -3,7 +3,7 @@
   community.mysql.mysql_db:
     name: "{{ zabbix_proxy_dbname }}"
     state: import
-    target: /usr/share/zabbix-sql-scripts/mysql/proxy.sql
+    target: /usr/share/doc/zabbix-sql-scripts/mysql/schema.sql.gz
     force: true
 
 - name: Enable zabbix-proxy service
