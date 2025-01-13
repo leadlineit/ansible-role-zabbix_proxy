@@ -58,8 +58,7 @@ jobs:
           pip install --upgrade pip
           pip install ansible \
           ansible-lint \
-          molecule "molecule-plugins[docker]"
-#          molecule[docker,lint] \
+          molecule "molecule-plugins[docker]" \
           flake8 \
           yamllint \
           docker
